@@ -36,9 +36,7 @@ stages:
           - task: AzureCLI@2
             displayName: Deploy terraform
             inputs:
-              azureSubscription: $(subscriptionName)
-              workingDirectory: $(System.DefaultWorkingDirectory)/infra/terraform
-              addSpnToEnvironment: true
+              azureSubscription: '$(subscriptionName)'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -47,7 +45,7 @@ stages:
                 export ARM_TENANT_ID=$tenantId
                 export ARM_SUBSCRIPTION_ID=$(subscriptionId)
                 export AZDO_PERSONAL_ACCESS_TOKEN=$(AZDO_PERSONAL_ACCESS_TOKEN)
-
+                
                 terraform init \
                    -backend-config="storage_account_name=tilt" \
                    -backend-config="resource_group_name=tilt-tf" \
@@ -57,3 +55,5 @@ stages:
                 terraform plan \
                   --out=out.plan
                 terraform apply out.plan
+              addSpnToEnvironment: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/infra/terraform'
