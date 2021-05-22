@@ -7,8 +7,6 @@ trigger:
   - main
 
 variables:
-  - name: subscriptionName
-  - name: subscriptionId
   - name: terraformVersion
     value: "0.15.4"
 
@@ -38,7 +36,7 @@ stages:
           - task: AzureCLI@2
             displayName: Deploy terraform
             inputs:
-              azureSubscription: $subscriptionName
+              azureSubscription: $(subscriptionName)
               workingDirectory: $(System.DefaultWorkingDirectory)/infra/terraform
               addSpnToEnvironment: true
               scriptType: 'bash'
