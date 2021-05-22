@@ -67,6 +67,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@types/mdns@^0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/mdns/-/mdns-0.0.33.tgz#f9ab02c3f34e33de9ba5711c281a86808cb89f9e"
+  integrity sha512-Uhm8lyPXIe2hz+aiiD6PXkGc7dlFk6Kc2HJlqmWXhAJktD5Arg27EYre0wv1SmmpSGQZ30X6iCjZyIGYKxmCxw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/noble@^0.0.40":
   version "0.0.40"
   resolved "https://registry.yarnpkg.com/@types/noble/-/noble-0.0.40.tgz#fb741967167761c79408c12ec2e657fec4c31557"
@@ -242,6 +249,11 @@ bindings@^1.4.0:
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
+
+bindings@~1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
+  integrity sha1-FK1hE4EtLTfXLme0ystLtyZQXxE=
 
 bl@^4.0.3:
   version "4.1.0"
@@ -1219,6 +1231,14 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
   integrity sha1-2TPOuSBdgr3PSIb2dCvcK03qFG0=
 
+mdns@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/mdns/-/mdns-2.7.2.tgz#1629077b950e2a9bdb02e370d505ff4fa2ace0ff"
+  integrity sha512-NBOQT22DKvuNWVY7nKNbs6w9eGRyPwnc4ZjKOsCG2G/4wNt1+IyiHvc+5yhcAUZLG46cOY321YW7Ufz3lMtrhw==
+  dependencies:
+    bindings "~1.2.1"
+    nan "^2.14.0"
+
 meow@^3.3.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-3.7.0.tgz#72cb668b425228290abbfa856892587308a801fb"
@@ -1312,7 +1332,7 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-nan@^2.14.2:
+nan@^2.14.0, nan@^2.14.2:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==

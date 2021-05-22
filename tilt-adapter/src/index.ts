@@ -29,7 +29,7 @@ function startScanning(duplicates: boolean) {
 }
 
 function startMdnsAdvertising() {
-  mdns.createAdvertisement(mdns.tcp("http"), 8080, { name: "tilt-adapter" });
+  mdns.createAdvertisement(mdns.tcp("tilt"), 8080).start();
 }
 
 startMdnsAdvertising();
