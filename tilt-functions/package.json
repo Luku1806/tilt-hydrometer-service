@@ -1,6 +1,7 @@
 {
   "name": "tilt-fuznctions",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "build": "tsc",
     "build:production": "npm run prestart && npm prune --production",

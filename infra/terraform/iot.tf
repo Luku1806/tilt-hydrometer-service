@@ -14,6 +14,8 @@ resource "azurerm_iothub_shared_access_policy" "tilt_functions" {
   resource_group_name = azurerm_resource_group.tilt.name
   iothub_name         = azurerm_iothub.tilt.name
 
-  registry_read  = true
-  registry_write = true
+  registry_read   = true
+  registry_write  = true
+  service_connect = true
+  device_connect  = true
 }
