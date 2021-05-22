@@ -1,0 +1,43 @@
+{
+  "name": "tilt-adapter",
+  "version": "1.0.0",
+  "author": "Lukas Reining",
+  "keywords": [],
+  "license": "ISC",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev -r dotenv/config --respawn --transpile-only src/index.ts",
+    "prod": "tsc && node ./build/app.js",
+    "test": "jest",
+    "test:ci": "jest --ci --testResultsProcessor=\"jest-junit\" --coverage --coverageReporters=cobertura",
+    "format": "prettier --write src/**.ts",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@types/noble": "^0.0.40",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@abandonware/noble": "^1.9.2-13"
+  },
+  "description": ""
+}
