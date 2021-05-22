@@ -1,29 +1,31 @@
 import * as noble from "@abandonware/noble";
 import * as mdns from "mdns";
+import * as azureIotDevice from "azure-iot-device";
 
-import { isTilt, parseTiltData } from "./tilt";
+import * as Tilt from "./tilt";
+import * as IotHub from "./iotHub";
 
-function registerBleHandler() {
+function registerDataHandler(twin: azureIotDevice.Twin) {
   noble.on("discover", async (peripheral) => {
-    if (isTilt(peripheral)) {
-      const tiltData = parseTiltData(peripheral);
+    if (Tilt.isTilt(peripheral)) {
+      const tiltData = Tilt.parseTiltData(peripheral);
+      await IotHub.updateTwin(tiltData, twin);
+
       console.log("Received data from Tilt device", tiltData);
     }
   });
 }
 
-function startScanning(duplicates: boolean) {
+function startBluetoothScanning(duplicates: boolean) {
   console.log("Scanning for Tilt devices");
 
   if (noble.state === "poweredOn") {
     noble.startScanning([], duplicates);
-    registerBleHandler();
   }
 
   noble.on("stateChange", function (newState) {
     if (newState === "poweredOn") {
       noble.startScanning([], duplicates);
-      registerBleHandler();
     }
   });
 }
@@ -32,5 +34,12 @@ function startMdnsAdvertising() {
   mdns.createAdvertisement(mdns.tcp("tilt"), 8080).start();
 }
 
-startMdnsAdvertising();
-startScanning(true);
+async function start() {
+  startMdnsAdvertising();
+  startBluetoothScanning(true);
+
+  const twin = await IotHub.connectTwin();
+  registerDataHandler(twin);
+}
+
+start();

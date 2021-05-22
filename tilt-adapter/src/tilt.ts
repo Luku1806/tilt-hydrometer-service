@@ -70,7 +70,7 @@ function isColor(candidate: string): candidate is Color {
 
 export function color(uuid: string): Color {
   const tilt = Object.entries(TiltUUIDs).find(
-    ([color, colorUuid]) => colorUuid.toLowerCase() === uuid.toLowerCase()
+    ([_, colorUuid]) => colorUuid.toLowerCase() === uuid.toLowerCase()
   );
 
   if (!tilt || !isColor(tilt[0])) {

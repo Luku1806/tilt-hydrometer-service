@@ -295,3 +295,20 @@ tmp/
 temp/
 
 .idea/azure
+
+### Terraform ###
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+.terraform.lock.hcl
+crash.log
+
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+backend.conf

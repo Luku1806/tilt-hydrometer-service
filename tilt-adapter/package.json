@@ -39,6 +39,10 @@
   },
   "dependencies": {
     "@abandonware/noble": "^1.9.2-13",
+    "@types/lodash.throttle": "^4.1.6",
+    "azure-iot-device": "^1.17.3",
+    "azure-iot-device-mqtt": "^1.15.3",
+    "lodash.throttle": "^4.1.1",
     "mdns": "^2.7.2"
   },
   "description": ""
