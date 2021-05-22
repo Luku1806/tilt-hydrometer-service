@@ -1,0 +1,48 @@
+name: Deploy tilt functions
+
+pool:
+  name: Azure Pipelines
+
+trigger:
+  - main
+
+variables:
+  functionAppName: 'tilt-functions'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      if [ -f extensions.csproj ]
+      then
+          dotnet build extensions.csproj --runtime ubuntu.20.04-x64 --output ./bin
+      fi
+    displayName: 'Build extensions'
+
+  - script: |
+      npm install
+      npm run build --if-present
+      npm run test --if-present
+      npm prune --production
+    displayName: 'Prepare binaries'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive files'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/tilt-functions'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - task: AzureFunctionApp@1
+    displayName: 'Deploy azure function'
+    inputs:
+      azureSubscription: '$(azureSubscription)'
+      appType: 'functionAppLinux'
+      appName: '$(functionAppName)'
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      runtimeStack: 'NODE|14'
