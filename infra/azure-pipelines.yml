@@ -1,0 +1,61 @@
+name: Deploy tilt infrastructure
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+trigger:
+  - main
+
+variables:
+  - name: subscriptionName
+  - name: subscriptionId
+  - name: terraformVersion
+    value: "0.15.4"
+
+stages:
+  - stage: test_infra_security
+    displayName: Run tfsec security check for infrastructure
+    jobs:
+      - job: tf_security_check
+        steps:
+          - script: |
+              wget -O tfsec https://github.com/tfsec/tfsec/releases/download/v0.36.6/tfsec-linux-amd64
+              chmod +x tfsec
+            displayName: Install tfsec
+            workingDirectory: $(System.DefaultWorkingDirectory)/infra/terraform
+          - script: ./tfsec .
+            displayName: Run tfsec security check
+            workingDirectory: $(System.DefaultWorkingDirectory)/infra/terraform
+  - stage: deploy_infra
+    displayName: Deploy infrastructure
+    jobs:
+      - job: deploy_terraform
+        steps:
+          - task: TerraformInstaller@0
+            displayName: Install terraform
+            inputs:
+              terraformVersion: $(terraformVersion)
+          - task: AzureCLI@2
+            displayName: Deploy terraform
+            inputs:
+              azureSubscription: $subscriptionName
+              workingDirectory: $(System.DefaultWorkingDirectory)/infra/terraform
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                export ARM_CLIENT_ID=$servicePrincipalId
+                export ARM_CLIENT_SECRET=$servicePrincipalKey
+                export ARM_TENANT_ID=$tenantId
+                export ARM_SUBSCRIPTION_ID=$(subscriptionId)
+                export AZDO_PERSONAL_ACCESS_TOKEN=$(AZDO_PERSONAL_ACCESS_TOKEN)
+
+                terraform init \
+                   -backend-config="storage_account_name=tilt" \
+                   -backend-config="resource_group_name=tilt-tf" \
+                   -backend-config="container_name=tfstate" \
+                   -backend-config="key=tilt.dev.tfstate"
+                terraform validate
+                terraform plan \
+                  --out=out.plan
+                terraform apply out.plan
