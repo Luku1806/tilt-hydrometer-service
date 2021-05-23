@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/tilt.iml" filepath="$PROJECT_DIR$/tilt.iml" />
       <module fileurl="file://$PROJECT_DIR$/tilt-adapter/tilt-adapter.iml" filepath="$PROJECT_DIR$/tilt-adapter/tilt-adapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/tilt-functions/tilt-functions.iml" filepath="$PROJECT_DIR$/tilt-functions/tilt-functions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tilt_app/tilt_app.iml" filepath="$PROJECT_DIR$/tilt_app/tilt_app.iml" />
     </modules>
   </component>
 </project>
