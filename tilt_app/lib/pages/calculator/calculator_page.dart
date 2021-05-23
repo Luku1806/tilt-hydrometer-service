@@ -14,7 +14,7 @@ import '../../beer_calculator.dart';
 class CalculatorPage extends StatefulWidget {
   final Function onSave;
 
-  CalculatorPage({@required this.onSave});
+  CalculatorPage({required this.onSave});
 
   @override
   _CalculatorPageState createState() => _CalculatorPageState();
@@ -24,11 +24,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
   final GlobalKey<FormState> wordFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> restWortFormKey = GlobalKey<FormState>();
 
-  double _wort;
-  double _restWort;
-  double _abv;
-  double _apparantFerm;
-  double _realFerm;
+  double? _wort;
+  double? _restWort;
+  double? _abv;
+  double? _apparantFerm;
+  double? _realFerm;
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +93,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
   void updateValues() {
     setState(() {
       if (_wort != null && _restWort != null) {
-        _abv = BeerCalculator.calculateABV(_wort, _restWort);
+        _abv = BeerCalculator.calculateABV(_wort!, _restWort!);
         _apparantFerm =
-            BeerCalculator.calculateApparantFermentation(_wort, _restWort);
-        _realFerm = BeerCalculator.calculateRealFermentation(_wort, _restWort);
+            BeerCalculator.calculateApparantFermentation(_wort!, _restWort!);
+        _realFerm =
+            BeerCalculator.calculateRealFermentation(_wort!, _restWort!);
       } else if (_wort != null) {
-        _abv = BeerCalculator.approximateABV(_wort);
+        _abv = BeerCalculator.approximateABV(_wort!);
         _apparantFerm = null;
         _realFerm = null;
       } else {
@@ -175,7 +176,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   void _saveBrew(String name) {
-    if (name == null || name.isEmpty) {
+    if (name.isEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Please insert a name for the beer.")));

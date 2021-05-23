@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class AbvCard extends StatelessWidget {
   const AbvCard({
-    Key key,
-    @required double abv,
-    @required double restWort,
+    Key? key,
+    required double? abv,
+    required double? restWort,
   })  : _abv = abv,
         _restWord = restWort,
         super(key: key);
 
-  final double _abv;
-  final double _restWord;
+  final double? _abv;
+  final double? _restWord;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class AbvCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(8),
         child: Column(
-          children: <Widget>[
+          children: [
             ListTile(
               title: Text(
                 "ABV",
@@ -33,7 +33,7 @@ class AbvCard extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'ABV: ${_abv != null ? "${_abv.toStringAsFixed(2)}%" : "---"}',
+              'ABV: ${_abv != null ? "${_abv!.toStringAsFixed(2)}%" : "---"}',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class AbvCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                   )
                 : null,
-          ].where((element) => element != null).toList(),
+          ].whereType<Widget>().toList(),
         ),
       ),
     );

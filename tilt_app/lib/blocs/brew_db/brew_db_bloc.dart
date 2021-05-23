@@ -6,7 +6,7 @@ import 'bloc.dart';
 class BrewDbBloc extends Bloc<BrewDbEvent, BrewDbState> {
   BrewDbProvider _brewDbProvider;
 
-  BrewDbBloc({BrewDbProvider brewDbProvider})
+  BrewDbBloc({BrewDbProvider? brewDbProvider})
       : _brewDbProvider = brewDbProvider ?? BrewDbProvider(),
         super(BrewDbInitialState());
 
@@ -20,7 +20,7 @@ class BrewDbBloc extends Bloc<BrewDbEvent, BrewDbState> {
       try {
         await _brewDbProvider.createBrew(event.brew);
         yield SaveBrewSuccess();
-      } catch (error) {
+      } on Error catch (error) {
         yield SaveBrewError(error);
       }
     } else if (event is DeleteBrew) {
@@ -28,7 +28,7 @@ class BrewDbBloc extends Bloc<BrewDbEvent, BrewDbState> {
       try {
         await _brewDbProvider.deleteBrew(event.brewId);
         yield DeleteBrewSuccess();
-      } catch (error) {
+      } on Error catch (error) {
         yield DeleteBrewError(error);
       }
     } else if (event is GetBrewList) {
@@ -36,7 +36,7 @@ class BrewDbBloc extends Bloc<BrewDbEvent, BrewDbState> {
       try {
         var brews = await _brewDbProvider.getAllBrews();
         yield GetBrewListSuccess(brews);
-      } catch (error) {
+      } on Error catch (error) {
         yield GetBrewListError(error);
       }
     }

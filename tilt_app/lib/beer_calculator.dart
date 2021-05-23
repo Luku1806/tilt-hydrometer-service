@@ -43,7 +43,7 @@ class BeerCalculator {
   }
 
   static List<double> _interpolateTemperature(double temperature) {
-    var result = new List<double>();
+    var result = <double>[];
     var lowest = ((temperature / 10) - 1).floor();
 
     if (0 > lowest) {
@@ -160,11 +160,13 @@ class BeerCalculator {
     return alcWeight / 0.795;
   }
 
-  static double calculateRealFermentation(double originalWort, double restWort) {
+  static double calculateRealFermentation(
+      double originalWort, double restWort) {
     return 81 * (1 - (restWort / originalWort));
   }
 
-  static double calculateApparantFermentation(double originalWort, double restWort) {
+  static double calculateApparantFermentation(
+      double originalWort, double restWort) {
     return 100 * (1 - (restWort / originalWort));
   }
 }

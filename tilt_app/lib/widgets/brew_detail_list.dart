@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class BrewDetailList extends StatelessWidget {
   final Brew brew;
 
-  BrewDetailList({@required this.brew});
+  BrewDetailList({required this.brew});
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +12,19 @@ class BrewDetailList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "ABV: ${brew.abv != null ? "${brew.abv.toStringAsFixed(2)}%" : "--"}",
+          "ABV: ${brew.abv != null ? "${brew.abv!.toStringAsFixed(2)}%" : "--"}",
         ),
         Text(
-          "Starting Gravity: ${brew.wort != null ? "${brew.wort.toStringAsFixed(1)} °Plato" : "--"}",
+          "Starting Gravity: ${brew.wort != null ? "${brew.wort!.toStringAsFixed(1)} °Plato" : "--"}",
         ),
         Text(
-          "Final Gravity: ${brew.restWort != null ? "${brew.restWort.toStringAsFixed(1)} °Plato" : "--"}",
+          "Final Gravity: ${brew.restWort != null ? "${brew.restWort!.toStringAsFixed(1)} °Plato" : "--"}",
         ),
         Text(
-          "Apparent fermentation rate: ${brew.apparantFerm != null ? "${brew.apparantFerm.toStringAsFixed(2)}%" : "--"}",
+          "Apparent fermentation rate: ${brew.apparantFerm != null ? "${brew.apparantFerm!.toStringAsFixed(2)}%" : "--"}",
         ),
         Text(
-          "Real fermentation rate: ${brew.realFerm != null ? "${brew.realFerm.toStringAsFixed(2)}%" : "--"}",
+          "Real fermentation rate: ${brew.realFerm != null ? "${brew.realFerm!.toStringAsFixed(2)}%" : "--"}",
         ),
       ],
     );

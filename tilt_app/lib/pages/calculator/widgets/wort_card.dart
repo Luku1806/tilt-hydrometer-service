@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class WortCard extends StatefulWidget {
   final String _name;
   final GlobalKey<FormState> _formKey;
-  final Function _onPlatoChanged;
+  final Function? _onPlatoChanged;
 
   WortCard(
     String name, {
-    Key key,
-    GlobalKey<FormState> formKey,
-    Function onPlatoChanged,
+    Key? key,
+    GlobalKey<FormState>? formKey,
+    Function? onPlatoChanged,
   })  : _name = name,
         _formKey = formKey ?? GlobalKey<FormState>(),
         _onPlatoChanged = onPlatoChanged,
@@ -32,10 +32,10 @@ class _WortCardState extends State<WortCard> {
   );
 
   static const _initialTemp = 20.0;
-  double _temp = _initialTemp;
-  double _calibratedTemp = _initialTemp;
-  double _plato;
-  double _correctedPlato;
+  double? _temp = _initialTemp;
+  double? _calibratedTemp = _initialTemp;
+  double? _plato;
+  double? _correctedPlato;
 
   @override
   void initState() {
@@ -137,7 +137,7 @@ class _WortCardState extends State<WortCard> {
   }
 
   void _onPlatoChanged(String value) {
-    if (widget._formKey.currentState.validate()) {
+    if (widget._formKey.currentState!.validate()) {
       try {
         _plato = double.parse(value);
       } catch (e) {
@@ -148,7 +148,7 @@ class _WortCardState extends State<WortCard> {
   }
 
   void _onTempChanged(String value) {
-    if (widget._formKey.currentState.validate()) {
+    if (widget._formKey.currentState!.validate()) {
       try {
         _temp = double.parse(value);
       } catch (e) {
@@ -159,7 +159,7 @@ class _WortCardState extends State<WortCard> {
   }
 
   void _onCalibratedTempChanged(String value) {
-    if (widget._formKey.currentState.validate()) {
+    if (widget._formKey.currentState!.validate()) {
       try {
         _calibratedTemp = double.parse(value);
       } catch (e) {
@@ -173,16 +173,16 @@ class _WortCardState extends State<WortCard> {
     setState(() {
       if (_plato != null && _temp != null && _calibratedTemp != null) {
         _correctedPlato =
-            BeerCalculator.correctWort(_plato, _temp, _calibratedTemp);
+            BeerCalculator.correctWort(_plato!, _temp!, _calibratedTemp!);
 
-        if (_correctedPlato <= 0) {
+        if (_correctedPlato! <= 0) {
           _correctedPlato = null;
         }
       } else {
         _correctedPlato = null;
       }
 
-      widget._onPlatoChanged(_correctedPlato);
+      widget._onPlatoChanged!(_correctedPlato);
     });
   }
 }

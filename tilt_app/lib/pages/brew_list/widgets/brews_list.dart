@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BrewsList extends StatelessWidget {
   final List<Brew> brews;
 
-  const BrewsList({Key key, @required this.brews}) : super(key: key);
+  const BrewsList({Key? key, required this.brews}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class BrewsList extends StatelessWidget {
       padding: EdgeInsets.all(16),
       itemCount: brews.length,
       itemBuilder: (context, index) {
-        var brew = brews[index];
+        final brew = brews[index];
         return Card(
           child: Padding(
             padding: EdgeInsets.all(8),
@@ -49,7 +49,7 @@ class BrewsList extends StatelessWidget {
             new TextButton(
               child: new Text("Delete"),
               onPressed: () {
-                context.read<BrewDbBloc>().add(DeleteBrew(brew.id));
+                context.read<BrewDbBloc>().add(DeleteBrew(brew.id!));
                 Navigator.of(context).pop();
               },
             ),

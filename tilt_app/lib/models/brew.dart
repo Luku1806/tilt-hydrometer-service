@@ -1,25 +1,23 @@
-import 'package:flutter/material.dart';
-
 class Brew {
-  int _id;
+  int? _id;
   final String name;
-  final double wort;
-  final double restWort;
-  final double apparantFerm;
-  final double realFerm;
-  final double abv;
+  final double? wort;
+  final double? restWort;
+  final double? apparantFerm;
+  final double? realFerm;
+  final double? abv;
 
   Brew({
     id,
-    @required this.name,
-    @required this.wort,
-    @required this.restWort,
-    @required this.apparantFerm,
-    @required this.realFerm,
-    @required this.abv,
+    required this.name,
+    this.wort,
+    this.restWort,
+    this.apparantFerm,
+    this.realFerm,
+    this.abv,
   }) : this._id = id;
 
-  int get id => _id;
+  int? get id => _id;
 
   Brew.fromMap(Map<String, dynamic> brew)
       : _id = brew["id"],

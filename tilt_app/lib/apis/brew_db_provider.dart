@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class BrewDbProvider {
-  Database _brewDb;
+  Database? _brewDb;
 
   BrewDbProvider();
 
@@ -26,19 +26,19 @@ class BrewDbProvider {
       _brewDb = await _connectDB();
     }
 
-    await _brewDb.insert(
+    await _brewDb!.insert(
       "brews",
       brew.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<int> deleteBrew(int id) async {
+  Future<int> deleteBrew(int? id) async {
     if (_brewDb == null) {
       _brewDb = await _connectDB();
     }
 
-    return await _brewDb.delete(
+    return await _brewDb!.delete(
       'brews',
       where: "id = ?",
       whereArgs: [id],
@@ -50,7 +50,7 @@ class BrewDbProvider {
       _brewDb = await _connectDB();
     }
 
-    var brewsQuery = await _brewDb.query('brews');
+    var brewsQuery = await _brewDb!.query('brews');
     var brews = brewsQuery.map<Brew>((brewMap) => Brew.fromMap(brewMap)).toList();
 
     return brews;
