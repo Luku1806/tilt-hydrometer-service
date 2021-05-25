@@ -1,9 +1,12 @@
 import 'package:binary_music_tools/blocs/brew_db/bloc.dart';
+import 'package:binary_music_tools/blocs/signin_cubit.dart';
+import 'package:binary_music_tools/blocs/tilt/tilt_bloc.dart';
 import 'package:binary_music_tools/pages/brew_list/brew_list_page.dart';
 import 'package:binary_music_tools/pages/calculator/calculator_page.dart';
 import 'package:binary_music_tools/pages/tilt/tilt_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'blocs/debug_bloc_delegate.dart';
 
@@ -15,16 +18,21 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => BrewDbBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SigninCubit()),
+        BlocProvider(create: (context) => BrewDbBloc()),
+        BlocProvider(create: (context) => TiltBloc()),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Brewers Tools',
         theme: ThemeData(
           primarySwatch: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(
-          title: "Brewers Tool",
+          title: "Brewers Tools",
         ),
       ),
     );
@@ -63,12 +71,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final account = context.select<SigninCubit, GoogleSignInAccount?>(
+      (signin) => signin.state,
+    );
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
         elevation: 0,
         backgroundColor: Colors.green[900],
+        actions: [
+          if (account?.photoUrl != null)
+            IconButton(
+              icon: ClipOval(child: Image.network(account!.photoUrl!)),
+              onPressed: () => {},
+            ),
+        ],
       ),
       backgroundColor: Colors.green[900],
       bottomNavigationBar: BottomNavigationBar(
@@ -81,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
+            icon: new Icon(Icons.thermostat_outlined),
             label: 'Tilt',
           ),
           BottomNavigationBarItem(
@@ -89,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Beers',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.data_usage),
+            icon: Icon(Icons.calculate_outlined),
             label: 'Calculator',
           )
         ],

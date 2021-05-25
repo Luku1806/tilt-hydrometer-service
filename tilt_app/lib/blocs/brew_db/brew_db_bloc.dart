@@ -11,9 +11,6 @@ class BrewDbBloc extends Bloc<BrewDbEvent, BrewDbState> {
         super(BrewDbInitialState());
 
   @override
-  BrewDbState get initialState => BrewDbInitialState();
-
-  @override
   Stream<BrewDbState> mapEventToState(BrewDbEvent event) async* {
     if (event is SaveBrew) {
       yield SaveBrewLoading();

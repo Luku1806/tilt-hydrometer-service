@@ -48,7 +48,7 @@ class FermentationCard extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-          ].where((element) => element != null).toList(),
+          ],
         ),
       ),
     );
