@@ -34,7 +34,11 @@ export const updateTwin = throttle(updateTwinValues, delayFromEnvironment(), {
 
 async function updateTwinValues(data: TiltData, twin: iotHub.Twin) {
   twin.properties.reported.update(
-    { [data.color]: toTwinData(data) },
+    {
+      [data.color]: {
+        ...toTwinData(twin.properties.reported[data.color], data),
+      },
+    },
     (error) => {
       console.log(`Updating ${data.color} device twin`);
       if (error) {
@@ -44,7 +48,15 @@ async function updateTwinValues(data: TiltData, twin: iotHub.Twin) {
   );
 }
 
-function toTwinData(data: TiltData) {
+interface TiltState extends TiltData {
+  startingGravity: number;
+}
+
+function toTwinData(previousState: TiltState, data: TiltData) {
   const { color, ...withoutColor } = data;
-  return withoutColor;
+  return {
+    ...previousState,
+    ...withoutColor,
+    startingGravity: previousState.startingGravity ?? data.specificGravity,
+  };
 }

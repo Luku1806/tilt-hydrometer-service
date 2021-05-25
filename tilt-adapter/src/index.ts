@@ -30,12 +30,7 @@ function startBluetoothScanning(duplicates: boolean) {
   });
 }
 
-function startMdnsAdvertising() {
-  mdns.createAdvertisement(mdns.tcp("tilt"), 8080).start();
-}
-
 async function start() {
-  startMdnsAdvertising();
   startBluetoothScanning(true);
 
   const twin = await IotHub.connectTwin();

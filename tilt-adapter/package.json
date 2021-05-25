@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev -r dotenv/config --respawn --transpile-only src/index.ts",
-    "prod": "tsc && node ./build/app.js",
+    "prod": "tsc && node ./build/index.js",
     "test": "jest",
     "test:ci": "jest --ci --testResultsProcessor=\"jest-junit\" --coverage --coverageReporters=cobertura",
     "format": "prettier --write src/**.ts",

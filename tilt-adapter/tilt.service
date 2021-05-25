@@ -1,0 +1,14 @@
+[Unit]
+Description=Tilt Adapter Service
+After=network.target
+
+[Service]
+ExecStart=npm run dev
+WorkingDirectory=/home/pi/tilt
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
