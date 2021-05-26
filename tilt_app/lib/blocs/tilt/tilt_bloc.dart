@@ -16,9 +16,13 @@ class TiltBloc extends Bloc<TiltEvent, TiltState> {
       yield TiltListLoadingState();
       try {
         yield TiltListSuccessState(
-          await _tiltRepository.findAll(),
+          await _tiltRepository.findByAdapterId(
+            adapterId: event.adapterId,
+            idToken: event.idToken,
+          ),
         );
       } catch (e) {
+        print(e);
         yield TiltListErrorState();
       }
     }

@@ -17,9 +17,10 @@ class Tilt {
   final double specificGravitySg;
 
   double get startingGravityPlato =>
-      startingGravitySg; //BeerCalculator.sgToPlato(_startingGravity);
+      BeerCalculator.sgToPlato(startingGravitySg);
 
-  double get specificGravityPlato => BeerCalculator.sgToPlato(specificGravitySg);
+  double get specificGravityPlato =>
+      BeerCalculator.sgToPlato(specificGravitySg);
 
   Tilt({
     required this.color,
@@ -36,10 +37,11 @@ class Tilt {
   ) =>
       Tilt(
         color: color,
-        startingGravitySg: dto["startingGravity"] ?? dto["specificGravity"],
-        specificGravitySg: dto["specificGravity"],
         temperature: Temperature.fromJson(dto["temperature"]),
         lastUpdated: DateTime.parse(timestamp),
+        specificGravitySg: dto["specificGravity"]?.toDouble(),
+        startingGravitySg: dto["startingGravity"]?.toDouble() ??
+            dto["specificGravity"]?.toDouble(),
       );
 
   factory Tilt.fromJson(Map<String, dynamic> json) => _$TiltFromJson(json);

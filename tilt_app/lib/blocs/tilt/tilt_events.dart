@@ -8,4 +8,9 @@ abstract class TiltEvent extends Equatable {
   bool get stringify => true;
 }
 
-class GetTilts extends TiltEvent {}
+class GetTilts extends TiltEvent {
+  final String adapterId;
+  final String idToken;
+
+  GetTilts({required this.adapterId, required this.idToken});
+}
