@@ -1,9 +1,9 @@
 import * as noble from "@abandonware/noble";
-import * as mdns from "mdns";
 import * as azureIotDevice from "azure-iot-device";
 
 import * as Tilt from "./tilt";
 import * as IotHub from "./iotHub";
+import { registerTwinDesiredStateChangeHandler } from "./iotHub";
 
 function registerDataHandler(twin: azureIotDevice.Twin) {
   noble.on("discover", async (peripheral) => {
@@ -35,6 +35,7 @@ async function start() {
 
   const twin = await IotHub.connectTwin();
   registerDataHandler(twin);
+  registerTwinDesiredStateChangeHandler(twin);
 }
 
 start();

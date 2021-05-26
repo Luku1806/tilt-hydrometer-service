@@ -20,6 +20,22 @@ export async function connectTwin(
   return await iotHubClient.getTwin();
 }
 
+export function registerTwinDesiredStateChangeHandler(twin: iotHub.Twin) {
+  twin.on("properties.desired", (delta: Object) => {
+    const patch = Object.entries(delta).reduce((current, [color, value]) => {
+      if (value?.startingGravity) {
+        return {
+          ...current,
+          [color]: { startingGravity: value.startingGravity },
+        };
+      }
+      return current;
+    }, {});
+
+    twin.properties.reported.update(patch, onDeviceTwinUpdateDone);
+  });
+}
+
 function delayFromEnvironment(defaultSeconds = 500) {
   return (
     (Number.isNaN(IOT_HUB_UPDATE_DELAY)
@@ -39,20 +55,22 @@ async function updateTwinValues(data: TiltData, twin: iotHub.Twin) {
         ...toTwinData(twin.properties.reported[data.color], data),
       },
     },
-    (error) => {
-      console.log(`Updating ${data.color} device twin`);
-      if (error) {
-        console.log("Error updating device twin");
-      }
-    }
+    onDeviceTwinUpdateDone
   );
+}
+
+function onDeviceTwinUpdateDone(error) {
+  console.log(`Updating device twin`);
+  if (error) {
+    console.log("Error updating device twin");
+  }
 }
 
 interface TiltState extends TiltData {
   startingGravity: number;
 }
 
-function toTwinData(previousState: TiltState, data: TiltData) {
+function toTwinData(previousState: TiltState, data: Partial<TiltData>) {
   const { color, ...withoutColor } = data;
   return {
     ...previousState,
