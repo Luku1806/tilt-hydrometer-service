@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 class BeerCalculator {
   static const List<List<double>> _densityTable = [
     //   0°C
@@ -168,5 +170,16 @@ class BeerCalculator {
   static double calculateApparantFermentation(
       double originalWort, double restWort) {
     return 100 * (1 - (restWort / originalWort));
+  }
+
+  static double sgToPlato(double sg) {
+    return 135.997 * math.pow(sg, 3) -
+        630.272 * math.pow(sg, 2) +
+        1111.14 * sg -
+        616.868;
+  }
+
+  static double platoToSg(double plato) {
+    return 1 + (plato / (258.6 - ((plato / 258.2) * 227.1)));
   }
 }

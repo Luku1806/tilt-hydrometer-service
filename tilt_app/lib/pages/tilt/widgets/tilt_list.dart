@@ -1,10 +1,9 @@
 import 'package:binary_music_tools/beer_calculator.dart';
 import 'package:binary_music_tools/models/tilt.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TiltList extends StatelessWidget {
-  final DateFormat _dateFormat = DateFormat("dd.MM.yyyy HH:mm:ss");
   final List<Tilt> tilts;
 
   TiltList({Key? key, required this.tilts}) : super(key: key);
@@ -27,14 +26,14 @@ class TiltList extends StatelessWidget {
                       Icon(Icons.circle, color: NameParsing.byName(tilt.color)),
                   title: Text(tilt.color),
                   subtitle: Text(
-                    _dateFormat.format(tilt.lastUpdated.toLocal()),
+                    timeago.format(tilt.lastUpdated, clock: DateTime.now()),
                     style: TextStyle(color: Colors.black.withOpacity(0.6)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Starting Gravity: ${tilt.startingGravity.toStringAsFixed(2)} °Plato",
+                    "Starting Gravity: ${tilt.startingGravityPlato.toStringAsFixed(3)} °Plato",
                     textAlign: TextAlign.start,
                     style: TextStyle(color: Colors.black.withOpacity(0.6)),
                   ),
@@ -42,7 +41,7 @@ class TiltList extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Gravity: ${tilt.specificGravity.toStringAsFixed(2)} °Plato",
+                    "Gravity: ${tilt.specificGravityPlato.toStringAsFixed(3)} °Plato",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.6),
@@ -54,8 +53,8 @@ class TiltList extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "ABV: ${BeerCalculator.calculateABV(
-                      tilt.startingGravity,
-                      tilt.specificGravity,
+                      tilt.startingGravityPlato,
+                      tilt.specificGravityPlato,
                     ).toStringAsFixed(2)} %",
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.6),
