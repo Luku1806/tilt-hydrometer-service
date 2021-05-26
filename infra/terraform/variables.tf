@@ -5,3 +5,11 @@ variable "tilt_rg_name" {
 variable tilt_rg_location {
   default = "West Europe"
 }
+
+variable "google_oauth_client_id" {
+  default = ""
+}
+
+variable "google_oauth_client_secret" {
+  default = ""
+}

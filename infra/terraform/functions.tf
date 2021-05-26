@@ -11,7 +11,7 @@ resource "azurerm_app_service_plan" "tiltfunctions" {
   name                = "tiltfunctionsapp-service-plan"
   resource_group_name = azurerm_resource_group.tilt.name
   location            = azurerm_resource_group.tilt.location
-  kind                = "Linux"
+  kind                = "functionapp"
   reserved            = true
 
   sku {
@@ -28,7 +28,19 @@ resource "azurerm_function_app" "tiltfunctions" {
   storage_account_name       = azurerm_storage_account.tiltfunctions.name
   storage_account_access_key = azurerm_storage_account.tiltfunctions.primary_access_key
   os_type                    = "linux"
-  app_settings               = {
+
+  auth_settings {
+    enabled          = true
+    default_provider = "Google"
+    unauthenticated_client_action = "RedirectToLoginPage"
+
+    google {
+      client_id     = var.google_oauth_client_id
+      client_secret = var.google_oauth_client_secret
+    }
+  }
+
+  app_settings = {
     FUNCTIONS_WORKER_RUNTIME: "node"
     IOT_HUB_CONNECTION_STRING: azurerm_iothub_shared_access_policy.tilt_functions.primary_connection_string
   }

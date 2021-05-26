@@ -1,13 +1,13 @@
 {
   "bindings": [
     {
-      "authLevel": "anonymous",
+      "authLevel": "function",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "adapters/{deviceId}/{color?}",
       "methods": [
-        "get"
+        "get",
+        "post"
       ]
     },
     {
@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/GetCurrentValues/index.js"
+  "scriptFile": "../dist/SetStartValue/index.js"
 }
