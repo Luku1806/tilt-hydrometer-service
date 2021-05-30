@@ -11,9 +11,9 @@
       ]
     },
     {
+      "name": "$return",
       "type": "http",
-      "direction": "out",
-      "name": "res"
+      "direction": "out"
     }
   ],
   "scriptFile": "../dist/GetCurrentValues/index.js"

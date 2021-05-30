@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "type": "eventHubTrigger",
+      "name": "eventHubMessages",
+      "direction": "in",
+      "eventHubName": "tilt-events",
+      "connection": "EVENT_HUB_CONNECTION_STRING",
+      "cardinality": "one"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../dist/PersistTwinUpdateData/index.js"
+}

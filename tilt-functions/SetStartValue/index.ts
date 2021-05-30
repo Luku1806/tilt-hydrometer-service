@@ -1,17 +1,58 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { DeviceTwinRepository } from "../lib/repositories/deviceTwinRepository";
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    context.log('HTTP trigger function processed a request.');
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
+const deviceTwinRepo = new DeviceTwinRepository();
 
-    context.res = {
-        // status: 200, /* Defaults to 200 */
-        body: responseMessage
+const httpTrigger: AzureFunction = async function (
+  context: Context,
+  req: HttpRequest
+): Promise<AzureFunctionsHttpResponse> {
+  const deviceId = context.bindingData.deviceId;
+  const color = context.bindingData.color;
+  const { startingGravity } = req.body;
+
+  if (!deviceId) {
+    return {
+      status: 400,
+      body: "Please send the device id either via query or body",
     };
+  }
 
+  if (!startingGravity) {
+    return {
+      status: 400,
+      body: "Please send the startingGravity as body field",
+    };
+  }
+
+  try {
+    const twin = await deviceTwinRepo.findById(deviceId);
+    await deviceTwinRepo.update(twin, {
+      [color]: {
+        startingGravity,
+      },
+    });
+
+    return {
+      status: 200,
+    };
+  } catch (error) {
+    context.log(error);
+
+    if (error.message === "Not found") {
+      return {
+        status: 400,
+        body: {
+          message: "Device with the given deviceId/color does not exist",
+        },
+      };
+    }
+
+    return {
+      status: 500,
+      body: { message: "Internal server error", error: error.message },
+    };
+  }
 };
 
 export default httpTrigger;

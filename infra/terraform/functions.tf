@@ -30,8 +30,8 @@ resource "azurerm_function_app" "tiltfunctions" {
   os_type                    = "linux"
 
   auth_settings {
-    enabled          = true
-    default_provider = "Google"
+    enabled                       = true
+    default_provider              = "Google"
     unauthenticated_client_action = "RedirectToLoginPage"
 
     google {
@@ -43,5 +43,8 @@ resource "azurerm_function_app" "tiltfunctions" {
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME: "node"
     IOT_HUB_CONNECTION_STRING: azurerm_iothub_shared_access_policy.tilt_functions.primary_connection_string
+    EVENT_HUB_CONNECTION_STRING: azurerm_eventhub_namespace.tilt_twin_updates.default_primary_connection_string
+    COSMOS_DB_CONNECTION_STRING: azurerm_cosmosdb_account.tilts.connection_strings[0]
+    COSMOS_DB_NAME: azurerm_cosmosdb_mongo_database.tilts.name
   }
 }

@@ -1,19 +1,19 @@
 {
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
+      "route": "adapters/{deviceId}/{color}",
       "methods": [
-        "get",
-        "post"
+        "patch"
       ]
     },
     {
+      "name": "$return",
       "type": "http",
-      "direction": "out",
-      "name": "res"
+      "direction": "out"
     }
   ],
   "scriptFile": "../dist/SetStartValue/index.js"
