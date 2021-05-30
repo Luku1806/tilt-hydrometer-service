@@ -9,4 +9,8 @@ export class TiltMeasurementRepository {
       { new: true, upsert: true }
     );
   }
+
+  async findByIdAndColor(adapterId: string, color: string) {
+    return await TiltTimeSeriesModel.findOne({ adapterId, color });
+  }
 }

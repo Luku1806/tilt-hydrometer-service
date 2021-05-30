@@ -3,13 +3,13 @@ import { AzureFunction, Context } from "@azure/functions";
 import * as MongoDb from "../lib/infra/mongoDb";
 import { TiltMeasurementRepository } from "../lib/repositories/tiltMeasurementRepository";
 import { TiltMeasurement } from "../lib/models/tiltMeasurement";
-import { IotHubMessage } from "../lib/models/iotHub";
+import { IotHubTiltData } from "../lib/models/iotHub";
 
 const tiltMeasurementRepository = new TiltMeasurementRepository();
 
 const eventHubTrigger: AzureFunction = async function (
   context: Context,
-  message: IotHubMessage
+  message: IotHubTiltData
 ): Promise<void> {
   try {
     await MongoDb.connect();
@@ -27,7 +27,7 @@ const eventHubTrigger: AzureFunction = async function (
       color,
       {
         specificGravity: reported.specificGravity,
-        temperature: reported.temperature.celsius,
+        temperature: reported.temperature.fahrenheit,
       },
     ]
   );

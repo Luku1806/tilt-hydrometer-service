@@ -1,13 +1,24 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as IoTHub from "../lib/infra/iotHub";
 import { DeviceTwinRepository } from "../lib/repositories/deviceTwinRepository";
+import { TiltMeasurementRepository } from "../lib/repositories/tiltMeasurementRepository";
+import { TiltColor } from "../lib/models/tilt";
+import * as MongoDb from "../lib/infra/mongoDb";
 
 const deviceTwinRepo = new DeviceTwinRepository();
+const tiltMeasurementRepo = new TiltMeasurementRepository();
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<AzureFunctionsHttpResponse> {
+  try {
+    await MongoDb.connect();
+  } catch (error) {
+    context.log.error(error);
+    return;
+  }
+
   const deviceId = context.bindingData.deviceId;
   const color = context.bindingData.color;
 
@@ -21,10 +32,24 @@ const httpTrigger: AzureFunction = async function (
   try {
     const twin = await deviceTwinRepo.findById(deviceId);
     const { $metadata, $version, ...tilts } = twin.properties.reported;
-    const bodyContent = color ? IoTHub.tiltWithColor(tilts, color) : { tilts };
+
+    const tiltsWithHistory = await Object.entries(tilts).reduce<any>(
+      async (result, [color, tilt]) => {
+        const enrichedTilts = await result;
+        return {
+          ...enrichedTilts,
+          [color]: await tiltWithHistory(deviceId, color as TiltColor, tilt),
+        };
+      },
+      Promise.resolve({})
+    );
+
+    const responseTilts = color
+      ? IoTHub.tiltWithColor(tiltsWithHistory, color)
+      : { tilts: tiltsWithHistory };
 
     return {
-      body: { lastUpdated: $metadata.$lastUpdated, ...bodyContent },
+      body: { lastUpdated: $metadata.$lastUpdated, ...responseTilts },
     };
   } catch (error) {
     context.log(error);
@@ -44,5 +69,13 @@ const httpTrigger: AzureFunction = async function (
     };
   }
 };
+
+async function tiltWithHistory(adapterId: string, color: TiltColor, tilt: any) {
+  const history = await tiltMeasurementRepo.findByIdAndColor(adapterId, color);
+  return {
+    ...tilt,
+    history: history?.measurements ?? [],
+  };
+}
 
 export default httpTrigger;

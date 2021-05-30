@@ -4,7 +4,7 @@ export const deviceRegistry = Registry.fromConnectionString(
   process.env["IOT_HUB_CONNECTION_STRING"]
 );
 
-export function tiltWithColor(tilts, color) {
+export function tiltWithColor(tilts: { [color: string]: any }, color: string) {
   const tilt = Object.entries(tilts).find(
     ([currentColor, _]) => currentColor.toLowerCase() === color
   );

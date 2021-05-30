@@ -1,6 +1,6 @@
 import { TiltColor } from "./tilt";
 
-export interface IotHubMessage {
+export interface IotHubTiltData {
   version: number;
   properties: {
     reported: {
