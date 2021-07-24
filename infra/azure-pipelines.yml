@@ -50,7 +50,7 @@ stages:
                    -backend-config="resource_group_name=tilt-tf" \
                    -backend-config="container_name=tfstate" \
                    -backend-config="key=tilt.dev.tfstate" \
-                   -var=google_oauth_client_id=$(GoogleClientId)
+                   -var=google_oauth_client_id=$(GoogleClientId) \
                    -var=google_oauth_client_secret=$(GoogleClientSecret)
                 terraform validate
                 terraform plan \
