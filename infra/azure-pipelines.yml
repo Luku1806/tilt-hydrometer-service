@@ -49,12 +49,12 @@ stages:
                    -backend-config="storage_account_name=tilt" \
                    -backend-config="resource_group_name=tilt-tf" \
                    -backend-config="container_name=tfstate" \
-                   -backend-config="key=tilt.dev.tfstate" \
-                   -var=google_oauth_client_id=$(GoogleClientId) \
-                   -var=google_oauth_client_secret=$(GoogleClientSecret)
+                   -backend-config="key=tilt.dev.tfstate"
                 terraform validate
                 terraform plan \
-                  --out=out.plan
+                  --out=out.plan \
+                  -var=google_oauth_client_id=$(GoogleClientId) \
+                  -var=google_oauth_client_secret=$(GoogleClientSecret)
                 terraform apply out.plan
               addSpnToEnvironment: true
               workingDirectory: '$(System.DefaultWorkingDirectory)/infra/terraform'
