@@ -5,6 +5,7 @@ resource "azurerm_storage_account" "tiltfunctions" {
   account_tier             = "Standard"
   access_tier              = "Cool"
   account_replication_type = "LRS"
+  min_tls_version          = "TLS1_2"
 }
 
 resource "azurerm_app_service_plan" "tiltfunctions" {

@@ -6,6 +6,7 @@ resource "azurerm_storage_account" "webpage" {
   account_tier              = "Standard"
   account_replication_type  = "LRS"
   enable_https_traffic_only = true
+  min_tls_version          = "TLS1_2"
 
   static_website {
     index_document = "index.html"
