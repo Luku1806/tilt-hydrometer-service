@@ -5,8 +5,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "adapters/{deviceId}/{color}",
-      "methods": ["patch"]
+      "route": "adapters/{deviceId}/{color?}",
+      "methods": ["delete"]
     },
     {
       "name": "$return",
@@ -14,5 +14,5 @@
       "direction": "out"
     }
   ],
-  "scriptFile": "../dist/SetStartValue/index.js"
+  "scriptFile": "../dist/GetCurrentValues/index.js"
 }

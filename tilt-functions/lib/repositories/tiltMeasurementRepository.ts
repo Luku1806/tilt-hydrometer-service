@@ -11,6 +11,10 @@ export class TiltMeasurementRepository {
   }
 
   async findByIdAndColor(adapterId: string, color: string) {
-    return await TiltTimeSeriesModel.findOne({ adapterId, color });
+    return TiltTimeSeriesModel.findOne({ adapterId, color });
+  }
+
+  async deleteByIdAndColor(adapterId: string, color: string) {
+    return TiltTimeSeriesModel.deleteOne({ adapterId, color });
   }
 }
