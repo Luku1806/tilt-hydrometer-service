@@ -30,6 +30,16 @@ resource "azurerm_function_app" "tiltfunctions" {
   storage_account_access_key = azurerm_storage_account.tiltfunctions.primary_access_key
   os_type                    = "linux"
 
+  site_config {
+    cors {
+      allowed_origins = [
+        "https://${azurerm_storage_account.webpage.primary_web_host}",
+        "https://localhost:9000",
+        "http://localhost:9000"
+      ]
+    }
+  }
+
   auth_settings {
     enabled                       = true
     default_provider              = "Google"
