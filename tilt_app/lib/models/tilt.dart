@@ -1,4 +1,5 @@
 import 'package:binary_music_tools/beer_calculator.dart';
+import 'package:binary_music_tools/models/historyEntry.dart';
 import 'package:binary_music_tools/models/temperature.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,6 +10,7 @@ class Tilt {
   final String color;
   final Temperature temperature;
   final DateTime lastUpdated;
+  final List<HistoryEntry> history;
 
   @JsonKey(name: "startingGravity")
   final double startingGravitySg;
@@ -28,6 +30,7 @@ class Tilt {
     required this.temperature,
     required this.startingGravitySg,
     required this.specificGravitySg,
+    required this.history,
   });
 
   factory Tilt.fromDto(
@@ -42,6 +45,11 @@ class Tilt {
         specificGravitySg: dto["specificGravity"]?.toDouble(),
         startingGravitySg: dto["startingGravity"]?.toDouble() ??
             dto["specificGravity"]?.toDouble(),
+        history: dto["history"]
+            .map<HistoryEntry>(
+              (jsonObject) => HistoryEntry.fromJson(jsonObject),
+            )
+            .toList(),
       );
 
   factory Tilt.fromJson(Map<String, dynamic> json) => _$TiltFromJson(json);

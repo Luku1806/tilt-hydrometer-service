@@ -6,6 +6,10 @@ import 'package:http/http.dart' as http;
 class TiltRepository {
   static const _baseUrl = "https://tilt-functions.azurewebsites.net";
 
+  final String adapterId;
+
+  TiltRepository({required this.adapterId});
+
   Future<String> _accessTokenForIdToken(String idToken) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/.auth/login/google'),
@@ -16,10 +20,7 @@ class TiltRepository {
     return jsonDecode(response.body)["authenticationToken"];
   }
 
-  Future<List<Tilt>> findByAdapterId({
-    required String adapterId,
-    required idToken,
-  }) async {
+  Future<List<Tilt>> findAll({required String idToken}) async {
     final response = await http.get(
       Uri.parse('$_baseUrl/api/adapters/$adapterId'),
       headers: {"X-ZUMO-AUTH": await _accessTokenForIdToken(idToken)},
@@ -38,5 +39,41 @@ class TiltRepository {
     return tilts.entries
         .map<Tilt>((tilt) => Tilt.fromDto(tilt.key, lastUpdated, tilt.value))
         .toList();
+  }
+
+  Future<void> updateTilt({
+    required String idToken,
+    required String color,
+    required double startingGravity,
+  }) async {
+    final response = await http.patch(
+      Uri.parse('$_baseUrl/api/adapters/$adapterId/$color'),
+      headers: {"X-ZUMO-AUTH": await _accessTokenForIdToken(idToken)},
+      body: jsonEncode({"startingGravity": startingGravity}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        "Api returned error ${response.statusCode} with message ${response.body}",
+      );
+    }
+  }
+
+  Future<void> resetTilt({
+    required String idToken,
+    required String color,
+    required double startingGravity,
+  }) async {
+    final response = await http.patch(
+      Uri.parse('$_baseUrl/api/adapters/$adapterId/$color'),
+      headers: {"X-ZUMO-AUTH": await _accessTokenForIdToken(idToken)},
+      body: jsonEncode({"startingGravity": startingGravity}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        "Api returned error ${response.statusCode} with message ${response.body}",
+      );
+    }
   }
 }

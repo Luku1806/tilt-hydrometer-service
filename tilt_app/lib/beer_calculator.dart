@@ -182,4 +182,12 @@ class BeerCalculator {
   static double platoToSg(double plato) {
     return 1 + (plato / (258.6 - ((plato / 258.2) * 227.1)));
   }
+
+  static double fahrenheitToCelsius(double fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+  }
+
+  static double celsiusToFahrenheit(double fahrenheit) {
+    return (fahrenheit * 5 / 9) + 32;
+  }
 }
