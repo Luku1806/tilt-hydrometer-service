@@ -7,9 +7,9 @@
       "eventHubName": "tilt-events",
       "connection": "EVENT_HUB_CONNECTION_STRING",
       "cardinality": "one",
-      "consumerGroup": "cosmosdb"
+      "consumerGroup": "brewfather"
     }
   ],
   "disabled": false,
-  "scriptFile": "../dist/PersistTwinUpdateData/index.js"
+  "scriptFile": "../dist/SyncTwinToBrewfather/index.js"
 }
