@@ -13,3 +13,7 @@ variable "google_oauth_client_id" {
 variable "google_oauth_client_secret" {
   default = ""
 }
+
+variable custom_domain {
+  default = "tilt-app.reiningapps.de"
+}

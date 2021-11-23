@@ -21,6 +21,23 @@ resource "azurerm_app_service_plan" "tiltfunctions" {
   }
 }
 
+
+resource "azurerm_app_service_custom_hostname_binding" "tiltfunctions" {
+  app_service_name    = azurerm_function_app.tiltfunctions.name
+  resource_group_name = azurerm_function_app.tiltfunctions.resource_group_name
+  hostname            = var.custom_domain
+}
+
+resource "azurerm_app_service_managed_certificate" "volleyballergebnissefunctions" {
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.tiltfunctions.id
+}
+
+resource "azurerm_app_service_certificate_binding" "volleyballergebnissefunctions" {
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.tiltfunctions.id
+  certificate_id      = azurerm_app_service_managed_certificate.volleyballergebnissefunctions.id
+  ssl_state           = "SniEnabled"
+}
+
 resource "azurerm_function_app" "tiltfunctions" {
   name                       = "tilt-functions"
   resource_group_name        = azurerm_resource_group.tilt.name
