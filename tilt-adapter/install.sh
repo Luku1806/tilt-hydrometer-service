@@ -17,7 +17,7 @@ sudo cp tilt.service /etc/systemd/system/tilt.service
 sudo systemctl enable tilt.service
 sudo systemctl start tilt.service
 
-crontab -l > crondata
-echo "*/5 * * * * /usr/bin/sudo -H /home/pi/tilt/checkwifi.sh >> /dev/null 2>&1" >> mycron
-crontab crondata
+sudo crontab -l > crondata
+echo "*/3 * * * * /usr/bin/sh /home/pi/tilt/checkwifi.sh >> /dev/null 2>&1" >> crondata
+sudo crontab crondata
 rm crondata
